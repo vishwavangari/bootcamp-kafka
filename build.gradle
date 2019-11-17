@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group 'com.bootcamp'
+version '0.0.1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("com.google.guava:guava:$guava_version")
+    //Reactive
+    implementation "io.reactivex.rxjava2:rxjava:2.2.14"
+
+    //Kafka Clients
+    compile("org.apache.kafka:kafka-clients:2.3.1")
+
+    //Kafka Streams
+    compile group: 'org.apache.kafka', name: 'kafka-streams', version: '2.3.1'
+
+    // objectMapper
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.1'
+
+    //test
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
