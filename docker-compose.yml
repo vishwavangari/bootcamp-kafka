@@ -1,10 +1,9 @@
 version: '3.2'
 
 services:
-  zoo1:
+  zoo:
     image: confluentinc/cp-zookeeper:5.3.1
     restart: unless-stopped
-    hostname: zoo1
     ports:
       - "2181:2181"
     environment:
@@ -13,24 +12,24 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_INIT_LIMIT: 5
       ZOOKEEPER_SYNC_LIMIT: 2
-      ZOOKEEPER_SERVERS: server.1=zoo1:2888:3888
+      ZOOKEEPER_SERVERS: server.1=zoo:2888:3888
     volumes:
-      - ./bootcamp/zoo1/data:/data
-      - ./bootcamp/zoo1/datalog:/datalog
+      - ./bootcamp/zoo/data:/data
+      - ./bootcamp/zoo/datalog:/datalog
 
-  kafka1:
+  kafka:
     image: confluentinc/cp-kafka:5.3.1
-    hostname: kafka1
     ports:
       - "9092:9092"
     environment:
-      # add the entry "127.0.0.1    kafka1" to your /etc/hosts file
-      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://kafka1:9092"
-      KAFKA_ZOOKEEPER_CONNECT: "zoo1:2181"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
+      KAFKA_ZOOKEEPER_CONNECT: "zoo:2181"
       KAFKA_BROKER_ID: 1
       KAFKA_LOG4J_LOGGERS: "kafka.controller=ERROR,kafka.producer.async.DefaultEventHandler=ERROR,state.change.logger=ERROR"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
     volumes:
-      - ./bootcamp/kafka1/data:/var/lib/kafka/data
+      - ./bootcamp/kafka/data:/var/lib/kafka/data
     depends_on:
-      - zoo1
+      - zoo
